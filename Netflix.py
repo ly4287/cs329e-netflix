@@ -10,7 +10,7 @@ from requests import get
 from os import path
 from numpy import sqrt, square, mean, subtract
 
-'''
+
 def create_cache(filename):
     """
     filename is the name of the cache file to load
@@ -29,21 +29,43 @@ def create_cache(filename):
         cache = pickle.loads(bytes)
 
     return cache
-
-
-AVERAGE_RATING = 3.60428996442
+#######################################################################
+#dict: (customer,movie): rating
 ACTUAL_CUSTOMER_RATING = create_cache(
     "cache-actualCustomerRating.pickle")
+
+#dict: (customer,movie):year of rating
+YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
+
+#dict: (movie,year):avg rating
 AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
     "cache-movieAverageByYear.pickle")
-YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
+#average rating for movie
+AVERAGE_MOVIE_RATING = {}
+for x,y in AVERAGE_MOVIE_RATING_PER_YEAR:
+	if x in AVERAGE_MOVIE_RATING:
+		AVERAGE_MOVIE_RATING[x] = (AVERAGE_MOVIE_RATING[x] + AVERAGE_MOVIE_RATING_PER_YEAR[(x,y)])/2
+	else:
+		AVERAGE_MOVIE_RATING[x] = AVERAGE_MOVIE_RATING_PER_YEAR[(x,y)]
+
+#dict: (customer,year):avg rating
 CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
     "cache-customerAverageRatingByYear.pickle")
-'''
+#avg customer rating
+AVERAGE_CUSTOMER_RATING = {}
+for x,y in CUSTOMER_AVERAGE_RATING_YEARLY:
+	if x in AVERAGE_CUSTOMER_RATING:
+		AVERAGE_CUSTOMER_RATING[x] = (AVERAGE_CUSTOMER_RATING[x] + CUSTOMER_AVERAGE_RATING_YEARLY[(x,y)])/2
+	else:
+		AVERAGE_CUSTOMER_RATING[x] = CUSTOMER_AVERAGE_RATING_YEARLY[(x,y)]
 
-actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
-movie_year_cache = {10040: 1990}
-decade_avg_cache = {1990: 2.4}
+movie_year_cache = dict((x,y) for x,y in AVERAGE_MOVIE_RATING_PER_YEAR.keys())
+from collections import defaultdict
+actual_scores_cache = defaultdict(dict)
+for x,y in ACTUAL_CUSTOMER_RATING:
+	actual_scores_cache[y][x] = ACTUAL_CUSTOMER_RATING[(x,y)]
+actual_scores_cache = dict(actual_scores_cache)
+
 
 # ------------
 # netflix_eval
@@ -55,20 +77,28 @@ def netflix_eval(reader, writer) :
 
     # iterate throught the file reader line by line
     for line in reader:
+
     # need to get rid of the '\n' by the end of the line
         line = line.strip()
+
         # check if the line ends with a ":", i.e., it's a movie title 
         if line[-1] == ':':
+
 		# It's a movie
             current_movie = line.rstrip(':')
             pred = movie_year_cache[int(current_movie)]
             pred = (pred // 10) *10
-            prediction = decade_avg_cache[pred]
+
             writer.write(line)
             writer.write('\n')
         else:
 		# It's a customer
             current_customer = line
+            #yr of rating
+            yr = YEAR_OF_RATING[(int(current_customer),int(current_movie))]
+            #current customer's average rating that year
+            customer_avg_rating_this_year = CUSTOMER_AVERAGE_RATING_YEARLY[(int(current_customer),yr)]
+            prediction = (AVERAGE_MOVIE_RATING[int(current_movie)] + customer_avg_rating_this_year)/2
             predictions.append(prediction)
             actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
             writer.write(str(prediction)) 
@@ -76,4 +106,3 @@ def netflix_eval(reader, writer) :
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
     writer.write(str(rmse)[:4] + '\n')
-
