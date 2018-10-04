@@ -29,7 +29,9 @@ def create_cache(filename):
         cache = pickle.loads(bytes)
 
     return cache
-#######################################################################
+
+#---------------------------------------------------
+
 #dict: (customer,movie): rating
 ACTUAL_CUSTOMER_RATING = create_cache(
     "cache-actualCustomerRating.pickle")
@@ -66,7 +68,6 @@ for x,y in ACTUAL_CUSTOMER_RATING:
 	actual_scores_cache[y][x] = ACTUAL_CUSTOMER_RATING[(x,y)]
 actual_scores_cache = dict(actual_scores_cache)
 
-
 # ------------
 # netflix_eval
 # ------------
@@ -101,7 +102,7 @@ def netflix_eval(reader, writer) :
             prediction = (AVERAGE_MOVIE_RATING[int(current_movie)] + customer_avg_rating_this_year)/2
             predictions.append(prediction)
             actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
-            writer.write(str(prediction)) 
+            writer.write(str(round(prediction,1)))  
             writer.write('\n')	
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
