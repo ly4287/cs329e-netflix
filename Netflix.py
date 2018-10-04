@@ -73,6 +73,7 @@ actual_scores_cache = dict(actual_scores_cache)
 # ------------
 
 def netflix_eval(reader, writer) :
+
     predictions = []
     actual = []
 
@@ -81,13 +82,17 @@ def netflix_eval(reader, writer) :
 
     # need to get rid of the '\n' by the end of the line
         line = line.strip()
-
+        
         # check if the line ends with a ":", i.e., it's a movie title 
         if line[-1] == ':':
 
 		# It's a movie
             current_movie = line.rstrip(':')
             pred = movie_year_cache[int(current_movie)]
+
+            #pre-condition
+            assert pred >= 0
+
             pred = (pred // 10) *10
 
             writer.write(line)
@@ -95,15 +100,28 @@ def netflix_eval(reader, writer) :
         else:
 		# It's a customer
             current_customer = line
+
+            #pre-condition
+            assert int(current_customer)>=0
+
             #yr of rating
             yr = YEAR_OF_RATING[(int(current_customer),int(current_movie))]
             #current customer's average rating that year
             customer_avg_rating_this_year = CUSTOMER_AVERAGE_RATING_YEARLY[(int(current_customer),yr)]
             prediction = (AVERAGE_MOVIE_RATING[int(current_movie)] + customer_avg_rating_this_year)/2
+
+            #post-conditions
+            assert prediction <= 5
+            assert prediction >= 1
+
             predictions.append(prediction)
             actual.append(actual_scores_cache[int(current_movie)][int(current_customer)])
             writer.write(str(round(prediction,1)))  
             writer.write('\n')	
     # calculate rmse for predications and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
+
+    #return validity
+    assert rmse >= 0
+
     writer.write(str(rmse)[:4] + '\n')
