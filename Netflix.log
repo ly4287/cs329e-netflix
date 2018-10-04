@@ -1,5 +1,53 @@
-commit abf685a1cb0656781ed767ce0567a0cdce39b254
-Author: Fares Fraij <fares@utexas.edu>
-Date:   Wed Aug 1 14:23:49 2018 +0000
+commit 957e1699723a5eda60df9a16b5a2f0b5b2060e7f
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Thu Oct 4 00:04:10 2018 -0500
+
+    confirm unit tests pass
+
+commit 3e4faba359cb5b4a8852bba762603b53914e839a
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Wed Oct 3 22:50:48 2018 -0500
+
+    acceptance tests close #8
+
+commit c4936862add56c6b57dda8d3dbe58e440101f50e
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Wed Oct 3 22:13:35 2018 -0500
+
+    total coverage not 100%??
+
+commit ba2c6723d5792522a841fc390c1926c8ce0e17fb
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Wed Oct 3 21:53:17 2018 -0500
+
+    add and pass all unit tests close #6
+
+commit fff4294ebc74dbd17a14ebb6a970aa28763659c9
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Wed Oct 3 18:44:58 2018 -0500
+
+    optimize code and write unit test close #7
+
+commit b80c4378d33f515efb02dba6dd54de4707830753
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Tue Oct 2 14:47:04 2018 -0500
+
+    make test
+
+commit c01cbbb124aa9bde556f3fc29aa7b50f64a59bb3
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Tue Oct 2 14:17:27 2018 -0500
+
+    recopy the public files
+
+commit c63988cf18d15a883e0e8716ae700ff0fb711a54
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Tue Oct 2 13:51:31 2018 -0500
+
+    clone public code onto local dev
+
+commit 9d2690be4552968bf09932a654781780611b1ee2
+Author: Lydia Yu <liddlelyd@gmail.com>
+Date:   Mon Sep 24 14:58:42 2018 +0000
 
     Initial commit
