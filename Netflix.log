@@ -1,3 +1,21 @@
+commit 7bd8b549f5d7f250a7f3570ea4ecae3a1c350b84
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Thu Oct 4 15:07:53 2018 -0500
+
+    remove extra files
+
+commit bfa89e98476b54f7ed2a4a1351041ce7ef796be8
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Thu Oct 4 14:59:26 2018 -0500
+
+    add pre/post condition and validity checks
+
+commit 391381aa57fa6eda7978737a465a813abd16eb0d
+Author: ly4287 <ly4287@cs.utexas.edu>
+Date:   Thu Oct 4 00:21:40 2018 -0500
+
+    deleted extra files, made html and log close #12#13
+
 commit 957e1699723a5eda60df9a16b5a2f0b5b2060e7f
 Author: ly4287 <ly4287@cs.utexas.edu>
 Date:   Thu Oct 4 00:04:10 2018 -0500
